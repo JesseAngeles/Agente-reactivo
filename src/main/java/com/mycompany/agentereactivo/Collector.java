@@ -13,8 +13,6 @@ public class Collector {
     private int x_ship;
     private int y_ship;
 
-    private ArrayList<int[]> shipsPositions;
-
     private Graphic graphic;
     private int[][] board;
 
@@ -22,23 +20,20 @@ public class Collector {
         int random = (int) (Math.random() * (1000));
         int shipsNumber = shipsPositions.size();
         int randomShips = (int) (Math.random() * shipsNumber);
-        
+
         this.x = x;
         this.y = y;
 
         this.hasMineral = false;
         this.playMode = true;
 
-        
         this.x_ship = shipsPositions.get(randomShips)[0];
         this.y_ship = shipsPositions.get(randomShips)[1];
 
         System.out.println("current:" + x + ',' + y);
         System.out.println("ship:" + x_ship + ',' + y_ship);
-        
-        
+
         this.graphic = graphic;
-        this.shipsPositions = shipsPositions;
         this.board = graphic.getBoard();
 
         Thread thread = new Thread(task);
@@ -93,9 +88,9 @@ public class Collector {
 
                     if (!nearShip.isEmpty()) {                  // HAY NAVE CERCA
                         this.hasMineral = false;
-                    } else {                                    // NO HAY NAVE CERCA
+                    } else if (!nearEmpty.isEmpty()) {          // NO HAY NAVE CERCA   
                         move(board, nearEmpty);
-                    }
+                   } 
 
                     this.board = graphic.updateBoard(last_x, last_y, this.x, this.y, hasMineral);
 
@@ -119,9 +114,9 @@ public class Collector {
                     if (!nearMineral.isEmpty()) {               // HAY MINERALES CERCA
                         move(board, nearMineral);
                         this.hasMineral = true;
-                    } else {                                    // NO HAY MINERALES CERCA
+                    } else if (!nearEmpty.isEmpty()) {          // NO HAY NAVE CERCA   
                         move(board, nearEmpty);
-                    }
+                   } 
 
                     this.board = graphic.updateBoard(last_x, last_y, this.x, this.y, hasMineral);
                 }

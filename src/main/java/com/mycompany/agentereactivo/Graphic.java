@@ -14,13 +14,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Graphic extends JFrame {
 
     private int addSelection;
     private boolean start = true;
-    
+
     private JButton[][] buttons = new JButton[10][10];
     private int[][] board = new int[10][10];
     private ArrayList<Collector> collectors = new ArrayList<>();
@@ -77,7 +78,7 @@ public class Graphic extends JFrame {
         itemEmptyAddMenu.addActionListener((e) -> {
             this.addSelection = 0;
         });
-        
+
         itemShipAddMenu.addActionListener((e) -> {
             this.addSelection = 1;
         });
@@ -115,17 +116,21 @@ public class Graphic extends JFrame {
                     }
                 }
 
-                for (int[] pos : collectorsPositions) {
-                    Collector collector = new Collector(this, pos[0], pos[1], shipsPositions);
-                    collectors.add(collector);
+                if (shipsPositions.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "EMPTY SHIPS", "ERROR", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    for (int[] pos : collectorsPositions) {
+                        Collector collector = new Collector(this, pos[0], pos[1], shipsPositions);
+                        collectors.add(collector);
+                    }
+                    this.start = false;
                 }
-                this.start = false;
             }
         });
 
         /*
             RESET
-        */
+         */
         itemResetFunction.addActionListener((e) -> {
             try {
                 for (Collector collector : collectors) {
@@ -150,7 +155,7 @@ public class Graphic extends JFrame {
 
         /*
             BUTTOM GRID
-        */
+         */
         JPanel panel = new JPanel(new GridLayout(10, 10));
         for (int j = 0; j < 10; j++) {
             for (int i = 0; i < 10; i++) {
